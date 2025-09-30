@@ -64,6 +64,33 @@ router.post('/', (req, res) => {
   res.status(201).json(newUser);   // 5
 });
 
+// PUT /users/:id
+router.put('/:id', (req, res) => {
+  const { id } = req.params;              // 1
+  const { nombre, email, role, peso_kg } = req.body; // 2
+
+  const index = users.findIndex(u => u.id === id); // 3
+  if (index === -1) {                     // 4
+    return res.status(404).json({ error: 'Usuario no encontrado' });
+  }
+
+  if (!nombre || !email) {                  // 5
+    return res.status(400).json({ error: 'Nombre y email son requeridos' });
+  }
+
+  users[index] = {                        // 6
+    ...users[index], // conserva los datos previos
+    nombre,
+    email,
+    fecha_actualizacion: new Date().toISOString(),
+    peso_kg: peso_kg || users[index].peso_kg, // solo actualiza si envían peso
+    role
+  };
+
+  res.status(200).json(users[index]);     // 7
+});
+
+
 
 module.exports = router;
 
