@@ -38,3 +38,37 @@ const getElementoById = (req, res) => {
   }
   return res.status(200).json(elemento);
 };
+
+const createElemento = (req, res) => {
+  const {
+    id_plan,
+    id_ejercicio,
+    series,
+    repeticiones,
+    peso_kg,
+    descanso_segundos,
+    orden
+  } = req.body;
+
+  if (!id_plan || !id_ejercicio || !series || !repeticiones || !orden) {
+    return res.status(400).json({ 
+      error: 'ID plan, ID ejercicio, series, repeticiones y orden son requeridos' 
+    });
+  }
+
+  const newElemento = {
+    id_item: `${Date.now()}`,
+    id_plan,
+    id_ejercicio,
+    series: parseInt(series),
+    repeticiones: parseInt(repeticiones),
+    peso_kg: peso_kg || null,
+    descanso_segundos: descanso_segundos || 60,
+    orden: parseInt(orden),
+    fecha_creacion: new Date().toISOString(),
+    fecha_actualizacion: new Date().toISOString()
+  };
+
+  elementosPlan.push(newElemento);
+  return res.status(201).json(newElemento);
+};
