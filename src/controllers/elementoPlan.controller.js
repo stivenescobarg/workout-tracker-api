@@ -116,3 +116,10 @@ const deleteElemento = (req, res) => {
   const deleted = elementosPlan.splice(index, 1);
   return res.status(200).json({ deleted: deleted[0].id_item });
 };
+module.exports = {
+  getAllElementos,
+  getElementoById,
+  createElemento,
+  updateElemento,
+  deleteElemento
+};
