@@ -44,3 +44,36 @@ const getSesionById = (req, res) => {
   }
   return res.status(200).json(sesion);
 };
+const createSesion = (req, res) => {
+  const {
+    id_usuario,
+    id_plan,
+    fecha_hora_programada,
+    duracion_minutos,
+    estado,
+    ubicacion,
+    notas
+  } = req.body;
+
+  if (!id_usuario || !id_plan || !fecha_hora_programada || !duracion_minutos) {
+    return res.status(400).json({ 
+      error: 'ID usuario, ID plan, fecha/hora programada y duración son requeridos' 
+    });
+  }
+
+  const newSesion = {
+    id_sesion: `${Date.now()}`,
+    id_usuario,
+    id_plan,
+    fecha_hora_programada,
+    duracion_minutos: parseInt(duracion_minutos),
+    estado: estado || 'pendiente',
+    ubicacion: ubicacion || null,
+    notas: notas || null,
+    fecha_creacion: new Date().toISOString(),
+    fecha_actualizacion: new Date().toISOString()
+  };
+
+  sesionesProgramadas.push(newSesion);
+  return res.status(201).json(newSesion);
+};
