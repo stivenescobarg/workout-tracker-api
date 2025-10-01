@@ -1,6 +1,14 @@
 // src/routes/v1/users.routes.js
 const express = require('express');
 const router = express.Router();
+const{
+    getAllUsers,
+    getUserById,
+    createUser,
+    updateUser,
+    deleteUser
+} = require('../../controllers/users.controller');
+// Importar el controlador de usuarios
 const usersController = require('../../controllers/users.controller');
 
 router.get('/', usersController.getAllUsers);
