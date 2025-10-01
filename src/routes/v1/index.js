@@ -6,6 +6,7 @@ const usersRoutes = require('./users.routes');
 const ejerciciosRoutes = require('./ejercicios.routes');
 const planEntrenamientoRoutes = require('./planEntrenamiento.routes');
 const elementoPlanRoutes = require('./elementoPlan.routes');
+const sesionProgramadaRoutes = require('./sesionProgramada.routes');
 
 //Configurar las rutas
 
@@ -13,4 +14,5 @@ router.use('/users', usersRoutes);
 router.use('/ejercicios', ejerciciosRoutes);
 router.use('/plan-entrenamiento', planEntrenamientoRoutes);
 router.use('/elemento-plan', elementoPlanRoutes);
+router.use('/sesion-programada', sesionProgramadaRoutes);
 module.exports = router;

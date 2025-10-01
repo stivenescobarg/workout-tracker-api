@@ -120,3 +120,11 @@ const deleteSesion = (req, res) => {
   const deleted = sesionesProgramadas.splice(index, 1);
   return res.status(200).json({ deleted: deleted[0].id_sesion });
 };
+
+module.exports = {
+  getAllSesiones,
+  getSesionById,
+  createSesion,
+  updateSesion,
+  deleteSesion
+};
