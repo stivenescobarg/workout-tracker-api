@@ -134,3 +134,12 @@ const updateReporte = (req, res) => {
 
   return res.status(200).json(reportes[index]);
 };
+const deleteReporte = (req, res) => {
+  const { id } = req.params;
+  const index = reportes.findIndex(r => r.id_reporte === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Reporte no encontrado' });
+  }
+  const deleted = reportes.splice(index, 1);
+  return res.status(200).json({ deleted: deleted[0].id_reporte });
+};
