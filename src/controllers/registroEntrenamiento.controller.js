@@ -158,3 +158,12 @@ const updateRegistro = (req, res) => {
   return res.status(200).json(registrosEntrenamiento[index]);
 };
 
+const deleteRegistro = (req, res) => {
+  const { id } = req.params;
+  const index = registrosEntrenamiento.findIndex(r => r.id_registro === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Registro de entrenamiento no encontrado' });
+  }
+  const deleted = registrosEntrenamiento.splice(index, 1);
+  return res.status(200).json({ deleted: deleted[0].id_registro });
+};
