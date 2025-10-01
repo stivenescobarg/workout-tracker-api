@@ -86,3 +86,51 @@ const createReporte = (req, res) => {
   reportes.push(newReporte);
   return res.status(201).json(newReporte);
 };
+
+const updateReporte = (req, res) => {
+  const { id } = req.params;
+  const {
+    tipo_reporte,
+    fecha_inicio,
+    fecha_fin,
+    metricas,
+    conclusiones
+  } = req.body;
+
+  const index = reportes.findIndex(r => r.id_reporte === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Reporte no encontrado' });
+  }
+
+  if (!tipo_reporte || !fecha_inicio || !fecha_fin || !metricas) {
+    return res.status(400).json({ 
+      error: 'Tipo reporte, fecha inicio, fecha fin y métricas son requeridos' 
+    });
+  }
+
+  // Validar estructura de métricas
+  if (typeof metricas !== 'object' || metricas === null) {
+    return res.status(400).json({ 
+      error: 'Métricas debe ser un objeto válido' 
+    });
+  }
+
+  reportes[index] = {
+    ...reportes[index],
+    tipo_reporte,
+    fecha_inicio,
+    fecha_fin,
+    metricas: {
+      sesiones_completadas: metricas.sesiones_completadas !== undefined ? 
+        metricas.sesiones_completadas : reportes[index].metricas.sesiones_completadas,
+      peso_total_levantado_kg: metricas.peso_total_levantado_kg !== undefined ? 
+        metricas.peso_total_levantado_kg : reportes[index].metricas.peso_total_levantado_kg,
+      calorias_quemadas: metricas.calorias_quemadas !== undefined ? 
+        metricas.calorias_quemadas : reportes[index].metricas.calorias_quemadas
+    },
+    conclusiones: conclusiones !== undefined ? conclusiones : reportes[index].conclusiones,
+    fecha_actualizacion: new Date().toISOString()
+  };
+
+  return res.status(200).json(reportes[index]);
+};
