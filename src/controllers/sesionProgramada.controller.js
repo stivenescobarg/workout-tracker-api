@@ -77,3 +77,37 @@ const createSesion = (req, res) => {
   sesionesProgramadas.push(newSesion);
   return res.status(201).json(newSesion);
 };
+
+const updateSesion = (req, res) => {
+  const { id } = req.params;
+  const {
+    fecha_hora_programada,
+    duracion_minutos,
+    estado,
+    ubicacion,
+    notas
+  } = req.body;
+
+  const index = sesionesProgramadas.findIndex(s => s.id_sesion === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Sesión programada no encontrada' });
+  }
+
+  if (!fecha_hora_programada || !duracion_minutos) {
+    return res.status(400).json({ 
+      error: 'Fecha/hora programada y duración son requeridos' 
+    });
+  }
+
+  sesionesProgramadas[index] = {
+    ...sesionesProgramadas[index],
+    fecha_hora_programada,
+    duracion_minutos: parseInt(duracion_minutos),
+    estado: estado || sesionesProgramadas[index].estado,
+    ubicacion: ubicacion || sesionesProgramadas[index].ubicacion,
+    notas: notas || sesionesProgramadas[index].notas,
+    fecha_actualizacion: new Date().toISOString()
+  };
+
+  return res.status(200).json(sesionesProgramadas[index]);
+};
