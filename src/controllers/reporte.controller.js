@@ -143,3 +143,10 @@ const deleteReporte = (req, res) => {
   const deleted = reportes.splice(index, 1);
   return res.status(200).json({ deleted: deleted[0].id_reporte });
 };
+module.exports = {
+  getAllReportes,
+  getReporteById,
+  createReporte,
+  updateReporte,
+  deleteReporte
+};
