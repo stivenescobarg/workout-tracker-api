@@ -122,3 +122,10 @@ const deleteEjercicio = (req, res) => {
   return res.status(200).json({ deleted: deleted[0].id });
 };
 
+module.exports = {
+  getAllEjercicios,
+  getEjercicioById,
+  createEjercicio,
+  updateEjercicio,
+  deleteEjercicio
+};
