@@ -44,3 +44,45 @@ const getReporteById = (req, res) => {
   }
   return res.status(200).json(reporte);
 };
+const createReporte = (req, res) => {
+  const {
+    id_usuario,
+    tipo_reporte,
+    fecha_inicio,
+    fecha_fin,
+    metricas,
+    conclusiones
+  } = req.body;
+
+  if (!id_usuario || !tipo_reporte || !fecha_inicio || !fecha_fin || !metricas) {
+    return res.status(400).json({ 
+      error: 'ID usuario, tipo reporte, fecha inicio, fecha fin y métricas son requeridos' 
+    });
+  }
+
+  // Validar estructura de métricas
+  if (typeof metricas !== 'object' || metricas === null) {
+    return res.status(400).json({ 
+      error: 'Métricas debe ser un objeto válido' 
+    });
+  }
+
+  const newReporte = {
+    id_reporte: `${Date.now()}`,
+    id_usuario,
+    tipo_reporte,
+    fecha_inicio,
+    fecha_fin,
+    metricas: {
+      sesiones_completadas: metricas.sesiones_completadas || 0,
+      peso_total_levantado_kg: metricas.peso_total_levantado_kg || 0,
+      calorias_quemadas: metricas.calorias_quemadas || 0
+    },
+    conclusiones: conclusiones || null,
+    fecha_creacion: new Date().toISOString(),
+    fecha_actualizacion: new Date().toISOString()
+  };
+
+  reportes.push(newReporte);
+  return res.status(201).json(newReporte);
+};
