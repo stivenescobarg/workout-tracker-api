@@ -72,3 +72,37 @@ const createElemento = (req, res) => {
   elementosPlan.push(newElemento);
   return res.status(201).json(newElemento);
 };
+
+const updateElemento = (req, res) => {
+  const { id } = req.params;
+  const {
+    series,
+    repeticiones,
+    peso_kg,
+    descanso_segundos,
+    orden
+  } = req.body;
+
+  const index = elementosPlan.findIndex(e => e.id_item === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Elemento del plan no encontrado' });
+  }
+
+  if (!series || !repeticiones || !orden) {
+    return res.status(400).json({ 
+      error: 'Series, repeticiones y orden son requeridos' 
+    });
+  }
+
+  elementosPlan[index] = {
+    ...elementosPlan[index],
+    series: parseInt(series),
+    repeticiones: parseInt(repeticiones),
+    peso_kg: peso_kg !== undefined ? peso_kg : elementosPlan[index].peso_kg,
+    descanso_segundos: descanso_segundos || elementosPlan[index].descanso_segundos,
+    orden: parseInt(orden),
+    fecha_actualizacion: new Date().toISOString()
+  };
+
+  return res.status(200).json(elementosPlan[index]);
+};
