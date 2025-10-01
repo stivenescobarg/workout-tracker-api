@@ -49,3 +49,57 @@ const getRegistroById = (req, res) => {
   return res.status(200).json(registro);
 };
 
+const createRegistro = (req, res) => {
+  const {
+    id_usuario,
+    id_sesion,
+    fecha_ejecucion,
+    items_registrados,
+    duracion_total,
+    calorias_quemadas,
+    valoracion
+  } = req.body;
+
+  if (!id_usuario || !id_sesion || !fecha_ejecucion || !items_registrados || !duracion_total) {
+    return res.status(400).json({ 
+      error: 'ID usuario, ID sesión, fecha ejecución, items registrados y duración total son requeridos' 
+    });
+  }
+
+  // Validar estructura de items_registrados
+  if (!Array.isArray(items_registrados) || items_registrados.length === 0) {
+    return res.status(400).json({ 
+      error: 'Items registrados debe ser un array con al menos un elemento' 
+    });
+  }
+
+  for (let item of items_registrados) {
+    if (!item.id_ejercicio || !item.series_realizadas || !item.repeticiones_totales) {
+      return res.status(400).json({ 
+        error: 'Cada item debe tener id_ejercicio, series_realizadas y repeticiones_totales' 
+      });
+    }
+  }
+
+  const newRegistro = {
+    id_registro: `${Date.now()}`,
+    id_usuario,
+    id_sesion,
+    fecha_ejecucion,
+    items_registrados: items_registrados.map(item => ({
+      id_ejercicio: item.id_ejercicio,
+      series_realizadas: parseInt(item.series_realizadas),
+      repeticiones_totales: parseInt(item.repeticiones_totales),
+      peso_usado: item.peso_usado || null
+    })),
+    duracion_total: parseInt(duracion_total),
+    calorias_quemadas: calorias_quemadas || null,
+    valoracion: valoracion || null,
+    fecha_creacion: new Date().toISOString(),
+    fecha_actualizacion: new Date().toISOString()
+  };
+
+  registrosEntrenamiento.push(newRegistro);
+  return res.status(201).json(newRegistro);
+};
+
