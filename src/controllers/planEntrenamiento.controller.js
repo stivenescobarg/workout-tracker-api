@@ -124,3 +124,11 @@ const deletePlan = (req, res) => {
   const deleted = planesEntrenamiento.splice(index, 1);
   return res.status(200).json({ deleted: deleted[0].id_plan });
 };
+
+module.exports = {
+  getAllPlanes,
+  getPlanById,
+  createPlan,
+  updatePlan,
+  deletePlan
+};
