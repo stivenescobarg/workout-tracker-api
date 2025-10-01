@@ -111,3 +111,12 @@ const updateSesion = (req, res) => {
 
   return res.status(200).json(sesionesProgramadas[index]);
 };
+const deleteSesion = (req, res) => {
+  const { id } = req.params;
+  const index = sesionesProgramadas.findIndex(s => s.id_sesion === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Sesión programada no encontrada' });
+  }
+  const deleted = sesionesProgramadas.splice(index, 1);
+  return res.status(200).json({ deleted: deleted[0].id_sesion });
+};
