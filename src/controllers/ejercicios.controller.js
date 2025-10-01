@@ -111,3 +111,14 @@ const updateEjercicio = (req, res) => {
 
   return res.status(200).json(ejercicios[index]);
 };
+
+const deleteEjercicio = (req, res) => {
+  const { id } = req.params;
+  const index = ejercicios.findIndex(e => e.id === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Ejercicio no encontrado' });
+  }
+  const deleted = ejercicios.splice(index, 1);
+  return res.status(200).json({ deleted: deleted[0].id });
+};
+
