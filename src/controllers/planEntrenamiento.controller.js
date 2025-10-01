@@ -78,3 +78,39 @@ const createPlan = (req, res) => {
   planesEntrenamiento.push(newPlan);
   return res.status(201).json(newPlan);
 };
+
+const updatePlan = (req, res) => {
+  const { id } = req.params;
+  const {
+    titulo,
+    descripcion,
+    activo,
+    nivel_dificultad,
+    total_semanas,
+    dias_por_semana
+  } = req.body;
+
+  const index = planesEntrenamiento.findIndex(p => p.id_plan === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Plan de entrenamiento no encontrado' });
+  }
+
+  if (!titulo || !descripcion) {
+    return res.status(400).json({ 
+      error: 'Título y descripción son requeridos' 
+    });
+  }
+
+  planesEntrenamiento[index] = {
+    ...planesEntrenamiento[index],
+    titulo,
+    descripcion,
+    activo: activo !== undefined ? activo : planesEntrenamiento[index].activo,
+    nivel_dificultad: nivel_dificultad || planesEntrenamiento[index].nivel_dificultad,
+    total_semanas: total_semanas || planesEntrenamiento[index].total_semanas,
+    dias_por_semana: dias_por_semana || planesEntrenamiento[index].dias_por_semana,
+    fecha_actualizacion: new Date().toISOString()
+  };
+
+  return res.status(200).json(planesEntrenamiento[index]);
+};
