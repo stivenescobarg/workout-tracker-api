@@ -106,3 +106,13 @@ const updateElemento = (req, res) => {
 
   return res.status(200).json(elementosPlan[index]);
 };
+
+const deleteElemento = (req, res) => {
+  const { id } = req.params;
+  const index = elementosPlan.findIndex(e => e.id_item === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Elemento del plan no encontrado' });
+  }
+  const deleted = elementosPlan.splice(index, 1);
+  return res.status(200).json({ deleted: deleted[0].id_item });
+};
