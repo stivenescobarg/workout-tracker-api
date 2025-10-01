@@ -114,3 +114,13 @@ const updatePlan = (req, res) => {
 
   return res.status(200).json(planesEntrenamiento[index]);
 };
+
+const deletePlan = (req, res) => {
+  const { id } = req.params;
+  const index = planesEntrenamiento.findIndex(p => p.id_plan === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Plan de entrenamiento no encontrado' });
+  }
+  const deleted = planesEntrenamiento.splice(index, 1);
+  return res.status(200).json({ deleted: deleted[0].id_plan });
+};
