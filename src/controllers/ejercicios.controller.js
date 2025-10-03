@@ -112,6 +112,38 @@ const updateEjercicio = (req, res) => {
   return res.status(200).json(ejercicios[index]);
 };
 
+const patchEjercicio = (req, res) => {
+  const { id } = req.params;
+  const {
+    nombre,
+    descripcion,
+    categoría,
+    grupo_muscular,
+    nivel_dificultad,
+    equipo_necesario
+  } = req.body;
+
+  const index = ejercicios.findIndex(e => e.id === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Ejercicio no encontrado' });
+  }
+
+  // Actualizar solo los campos que se envían en el body
+  const ejercicioActualizado = {
+    ...ejercicios[index],
+    ...(nombre && { nombre }),
+    ...(descripcion && { descripcion }),
+    ...(categoría && { categoría }),
+    ...(grupo_muscular && { grupo_muscular }),
+    ...(nivel_dificultad && { nivel_dificultad }),
+    ...(equipo_necesario !== undefined && { equipo_necesario }),
+    fecha_actualizacion: new Date().toISOString()
+  };
+
+  ejercicios[index] = ejercicioActualizado;
+  return res.status(200).json(ejercicioActualizado);
+};
+
 const deleteEjercicio = (req, res) => {
   const { id } = req.params;
   const index = ejercicios.findIndex(e => e.id === id);
@@ -127,5 +159,6 @@ module.exports = {
   getEjercicioById,
   createEjercicio,
   updateEjercicio,
+  patchEjercicio,
   deleteEjercicio
 };

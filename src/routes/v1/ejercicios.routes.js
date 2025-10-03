@@ -5,6 +5,7 @@ const{
     getEjercicioById,
     createEjercicio,
     updateEjercicio,
+    patchEjercicio,
     deleteEjercicio
 } = require('../../controllers/ejercicios.controller');
 // Importar el controlador de ejercicios    
@@ -14,6 +15,7 @@ router.get('/', ejerciciosController.getAllEjercicios);
 router.get('/:id', ejerciciosController.getEjercicioById);
 router.post('/', ejerciciosController.createEjercicio);
 router.put('/:id', ejerciciosController.updateEjercicio);
+router.patch('/:id', ejerciciosController.patchEjercicio);
 router.delete('/:id', ejerciciosController.deleteEjercicio);
 
 module.exports = router;
